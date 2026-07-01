@@ -32,6 +32,8 @@ const storageKeys = [
 
   "ieltsNotes",
   "ieltsMistakes",
+
+  "reviewCount",
 ];
 
 type Mistake = {
@@ -61,13 +63,17 @@ export default function Settings() {
   const [mistakesCount, setMistakesCount] = useState(0);
   const [fixedMistakesCount, setFixedMistakesCount] = useState(0);
 
+  const [reviewCount, setReviewCount] = useState(0);
+
   const [message, setMessage] = useState("");
 
   const loadData = () => {
     const words = JSON.parse(localStorage.getItem("learnedWords") || "[]");
+
     const grammar = JSON.parse(
       localStorage.getItem("completedGrammarLessons") || "[]"
     );
+
     const tasks = JSON.parse(localStorage.getItem("plannerTasks") || "[]");
 
     const essay = localStorage.getItem("writingEssay") || "";
@@ -85,9 +91,12 @@ export default function Settings() {
     const savedMockCount = localStorage.getItem("mockTestCount");
 
     const notes = JSON.parse(localStorage.getItem("ieltsNotes") || "[]");
+
     const mistakes = JSON.parse(
       localStorage.getItem("ieltsMistakes") || "[]"
     );
+
+    const savedReviewCount = localStorage.getItem("reviewCount");
 
     const fixedMistakes = mistakes.filter(
       (mistake: Mistake) => mistake.fixed
@@ -114,6 +123,8 @@ export default function Settings() {
     setNotesCount(notes.length);
     setMistakesCount(mistakes.length);
     setFixedMistakesCount(fixedMistakes);
+
+    setReviewCount(savedReviewCount ? Number(savedReviewCount) : 0);
   };
 
   useEffect(() => {
@@ -243,11 +254,9 @@ export default function Settings() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-5 md:grid-cols-2 mb-8">
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-3 mb-8">
         <div className="bg-slate-800 rounded-2xl p-6">
-          <h2 className="text-2xl font-bold text-green-400 mb-4">
-            📒 Notes
-          </h2>
+          <h2 className="text-2xl font-bold text-green-400 mb-4">📒 Notes</h2>
 
           <p className="text-4xl font-bold">{notesCount}</p>
 
@@ -269,6 +278,16 @@ export default function Settings() {
             <span className="font-bold text-white">{fixedMistakesCount}</span>
           </p>
         </div>
+
+        <div className="bg-slate-800 rounded-2xl p-6">
+          <h2 className="text-2xl font-bold text-green-400 mb-4">
+            🔁 Review Mode
+          </h2>
+
+          <p className="text-4xl font-bold">{reviewCount}</p>
+
+          <p className="mt-2 text-slate-400">Số lần ôn tập nhanh</p>
+        </div>
       </div>
 
       <div className="bg-red-950 border border-red-500 rounded-2xl p-6">
@@ -277,7 +296,7 @@ export default function Settings() {
         <p className="text-slate-300 mb-5 leading-7">
           Nút này sẽ xóa toàn bộ dữ liệu đã lưu trên trình duyệt hiện tại:
           Profile, Vocabulary, Grammar, Reading, Listening, Writing, Speaking,
-          Planner, Streak, Mock Test, Notes và Mistake Book.
+          Planner, Streak, Mock Test, Notes, Mistake Book và Review Mode.
         </p>
 
         <button
