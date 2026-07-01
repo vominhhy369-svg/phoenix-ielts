@@ -28,7 +28,22 @@ const questions = [
 export default function Reading() {
   const [answers, setAnswers] = useState<string[]>([]);
   const [score, setScore] = useState<number | null>(null);
+  const [lastScore, setLastScore] = useState<number | null>(null);
+  const [bestScore, setBestScore] = useState<number | null>(null);
   const [time, setTime] = useState(600);
+
+  useEffect(() => {
+    const savedLastScore = localStorage.getItem("readingLastScore");
+    const savedBestScore = localStorage.getItem("readingBestScore");
+
+    if (savedLastScore) {
+      setLastScore(Number(savedLastScore));
+    }
+
+    if (savedBestScore) {
+      setBestScore(Number(savedBestScore));
+    }
+  }, []);
 
   useEffect(() => {
     if (time <= 0 || score !== null) return;
@@ -59,6 +74,19 @@ export default function Reading() {
     });
 
     setScore(correct);
+    setLastScore(correct);
+    localStorage.setItem("readingLastScore", String(correct));
+
+    if (bestScore === null || correct > bestScore) {
+      setBestScore(correct);
+      localStorage.setItem("readingBestScore", String(correct));
+    }
+  };
+
+  const resetQuiz = () => {
+    setAnswers([]);
+    setScore(null);
+    setTime(600);
   };
 
   return (
@@ -67,12 +95,32 @@ export default function Reading() {
         <div>
           <h1 className="text-5xl font-bold">📖 Reading</h1>
           <p className="text-slate-400 mt-3">
-            Luyện đọc IELTS với bài đọc ngắn và câu hỏi.
+            Luyện đọc IELTS với bài đọc ngắn, timer và lưu điểm.
           </p>
         </div>
 
         <div className="bg-slate-800 px-6 py-3 rounded-2xl font-bold text-green-400">
           ⏱ {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-6 mb-8">
+        <div className="bg-slate-800 rounded-2xl p-6">
+          <h2 className="text-2xl font-bold text-green-400">
+            Điểm gần nhất
+          </h2>
+          <p className="mt-3 text-3xl font-bold">
+            {lastScore === null ? "Chưa có" : `${lastScore}/${questions.length}`}
+          </p>
+        </div>
+
+        <div className="bg-slate-800 rounded-2xl p-6">
+          <h2 className="text-2xl font-bold text-green-400">
+            Điểm cao nhất
+          </h2>
+          <p className="mt-3 text-3xl font-bold">
+            {bestScore === null ? "Chưa có" : `${bestScore}/${questions.length}`}
+          </p>
         </div>
       </div>
 
@@ -123,12 +171,21 @@ export default function Reading() {
         ))}
       </div>
 
-      <button
-        onClick={submitQuiz}
-        className="mt-8 bg-green-500 text-black px-8 py-3 rounded-xl font-bold"
-      >
-        Nộp bài
-      </button>
+      <div className="flex gap-4 mt-8">
+        <button
+          onClick={submitQuiz}
+          className="bg-green-500 text-black px-8 py-3 rounded-xl font-bold"
+        >
+          Nộp bài
+        </button>
+
+        <button
+          onClick={resetQuiz}
+          className="bg-slate-700 px-8 py-3 rounded-xl font-bold"
+        >
+          Làm lại
+        </button>
+      </div>
 
       {score !== null && (
         <div className="mt-6 bg-slate-800 rounded-2xl p-6">
