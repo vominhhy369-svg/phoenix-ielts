@@ -8,27 +8,37 @@ export default function Home() {
   const [grammarLessons, setGrammarLessons] = useState<string[]>([]);
   const [hasWriting, setHasWriting] = useState(false);
 
+  const [readingLastScore, setReadingLastScore] = useState<string>("Chưa có");
+  const [readingBestScore, setReadingBestScore] = useState<string>("Chưa có");
+
+  const [listeningLastScore, setListeningLastScore] = useState<string>("Chưa có");
+  const [listeningBestScore, setListeningBestScore] = useState<string>("Chưa có");
+
   useEffect(() => {
     const savedWords = localStorage.getItem("learnedWords");
     const savedTasks = localStorage.getItem("plannerTasks");
     const savedGrammar = localStorage.getItem("completedGrammarLessons");
     const savedEssay = localStorage.getItem("writingEssay");
 
-    if (savedWords) {
-      setLearnedWords(JSON.parse(savedWords));
-    }
+    const savedReadingLast = localStorage.getItem("readingLastScore");
+    const savedReadingBest = localStorage.getItem("readingBestScore");
 
-    if (savedTasks) {
-      setPlannerTasks(JSON.parse(savedTasks));
-    }
+    const savedListeningLast = localStorage.getItem("listeningLastScore");
+    const savedListeningBest = localStorage.getItem("listeningBestScore");
 
-    if (savedGrammar) {
-      setGrammarLessons(JSON.parse(savedGrammar));
-    }
+    if (savedWords) setLearnedWords(JSON.parse(savedWords));
+    if (savedTasks) setPlannerTasks(JSON.parse(savedTasks));
+    if (savedGrammar) setGrammarLessons(JSON.parse(savedGrammar));
 
     if (savedEssay && savedEssay.trim().length > 0) {
       setHasWriting(true);
     }
+
+    if (savedReadingLast) setReadingLastScore(`${savedReadingLast}/3`);
+    if (savedReadingBest) setReadingBestScore(`${savedReadingBest}/3`);
+
+    if (savedListeningLast) setListeningLastScore(`${savedListeningLast}/3`);
+    if (savedListeningBest) setListeningBestScore(`${savedListeningBest}/3`);
   }, []);
 
   const totalTasks = 6;
@@ -91,7 +101,7 @@ export default function Home() {
 
       <div className="grid grid-cols-1 gap-5 xl:grid-cols-2 mb-8 md:mb-10">
         <div className="bg-slate-800 rounded-2xl p-5 md:p-8">
-          <div className="flex flex-col gap-2 md:flex-row md:justify-between md:items-center mb-4">
+          <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl md:text-3xl font-bold">
               📅 Tiến độ hôm nay
             </h2>
@@ -114,7 +124,7 @@ export default function Home() {
         </div>
 
         <div className="bg-slate-800 rounded-2xl p-5 md:p-8">
-          <div className="flex flex-col gap-2 md:flex-row md:justify-between md:items-center mb-4">
+          <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl md:text-3xl font-bold">
               ✍️ Tiến độ Grammar
             </h2>
@@ -134,6 +144,48 @@ export default function Home() {
           <p className="mt-4 text-slate-400">
             Bạn đã học {grammarLessons.length}/{totalGrammarLessons} bài Grammar.
           </p>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4 mb-8 md:mb-10">
+        <div className="bg-slate-800 rounded-2xl p-5 md:p-6">
+          <h2 className="text-xl md:text-2xl font-bold text-green-400">
+            📖 Reading
+          </h2>
+          <p className="mt-3 text-slate-300">
+            Gần nhất: <span className="font-bold">{readingLastScore}</span>
+          </p>
+          <p className="mt-2 text-slate-300">
+            Cao nhất: <span className="font-bold">{readingBestScore}</span>
+          </p>
+        </div>
+
+        <div className="bg-slate-800 rounded-2xl p-5 md:p-6">
+          <h2 className="text-xl md:text-2xl font-bold text-green-400">
+            🎧 Listening
+          </h2>
+          <p className="mt-3 text-slate-300">
+            Gần nhất: <span className="font-bold">{listeningLastScore}</span>
+          </p>
+          <p className="mt-2 text-slate-300">
+            Cao nhất: <span className="font-bold">{listeningBestScore}</span>
+          </p>
+        </div>
+
+        <div className="bg-slate-800 rounded-2xl p-5 md:p-6">
+          <h2 className="text-xl md:text-2xl font-bold text-green-400">
+            🔥 Streak
+          </h2>
+          <p className="mt-3 text-3xl font-bold">Day 1</p>
+          <p className="mt-2 text-slate-400">Sẽ nâng cấp sau</p>
+        </div>
+
+        <div className="bg-slate-800 rounded-2xl p-5 md:p-6">
+          <h2 className="text-xl md:text-2xl font-bold text-green-400">
+            🏆 Level
+          </h2>
+          <p className="mt-3 text-3xl font-bold">Beginner</p>
+          <p className="mt-2 text-slate-400">IELTS 2.0 → 7.0</p>
         </div>
       </div>
 
