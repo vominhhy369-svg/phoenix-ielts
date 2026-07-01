@@ -18,43 +18,45 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="w-64 min-h-screen bg-slate-900 text-white p-6 border-r border-slate-800">
-      <div className="mb-10">
-        <h1 className="text-3xl font-bold">🎓 Phoenix</h1>
-        <p className="text-slate-400 mt-2 text-sm">
-          IELTS MASTER 7.0
-        </p>
-      </div>
+    <aside className="w-full border-b border-slate-800 bg-slate-900 text-white md:min-h-screen md:w-64 md:border-b-0 md:border-r">
+      <div className="p-4 md:p-6">
+        <div className="mb-4 md:mb-10">
+          <h1 className="text-2xl font-bold md:text-3xl">🎓 Phoenix</h1>
+          <p className="mt-1 text-xs text-slate-400 md:text-sm">
+            IELTS MASTER 7.0
+          </p>
+        </div>
 
-      <nav className="flex flex-col gap-3">
-        {menuItems.map((item) => {
-          const isActive = pathname === item.href;
+        <nav className="flex gap-2 overflow-x-auto pb-2 md:flex-col md:gap-3 md:overflow-visible md:pb-0">
+          {menuItems.map((item) => {
+            const isActive = pathname === item.href;
 
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`px-4 py-3 rounded-xl font-bold transition ${
-                isActive
-                  ? "bg-green-500 text-black"
-                  : "text-slate-300 hover:bg-slate-800 hover:text-white"
-              }`}
-            >
-              <span className="mr-3">{item.icon}</span>
-              {item.name}
-            </Link>
-          );
-        })}
-      </nav>
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`whitespace-nowrap rounded-xl px-4 py-3 text-sm font-bold transition md:text-base ${
+                  isActive
+                    ? "bg-green-500 text-black"
+                    : "text-slate-300 hover:bg-slate-800 hover:text-white"
+                }`}
+              >
+                <span className="mr-2">{item.icon}</span>
+                {item.name}
+              </Link>
+            );
+          })}
+        </nav>
 
-      <div className="mt-10 bg-slate-800 rounded-2xl p-4">
-        <p className="text-sm text-slate-400">Goal</p>
-        <p className="text-2xl font-bold text-green-400 mt-1">
-          IELTS 7.0
-        </p>
-        <p className="text-xs text-slate-500 mt-2">
-          Deadline: cuối tháng 3
-        </p>
+        <div className="mt-5 hidden rounded-2xl bg-slate-800 p-4 md:block">
+          <p className="text-sm text-slate-400">Goal</p>
+          <p className="mt-1 text-2xl font-bold text-green-400">
+            IELTS 7.0
+          </p>
+          <p className="mt-2 text-xs text-slate-500">
+            Deadline: cuối tháng 3
+          </p>
+        </div>
       </div>
     </aside>
   );
