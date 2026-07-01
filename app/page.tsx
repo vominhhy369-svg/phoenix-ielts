@@ -11,8 +11,10 @@ export default function Home() {
   const [readingLastScore, setReadingLastScore] = useState<string>("Chưa có");
   const [readingBestScore, setReadingBestScore] = useState<string>("Chưa có");
 
-  const [listeningLastScore, setListeningLastScore] = useState<string>("Chưa có");
-  const [listeningBestScore, setListeningBestScore] = useState<string>("Chưa có");
+  const [listeningLastScore, setListeningLastScore] =
+    useState<string>("Chưa có");
+  const [listeningBestScore, setListeningBestScore] =
+    useState<string>("Chưa có");
 
   useEffect(() => {
     const savedWords = localStorage.getItem("learnedWords");
@@ -45,9 +47,47 @@ export default function Home() {
   const totalGrammarLessons = 4;
 
   const plannerProgress = Math.round((plannerTasks.length / totalTasks) * 100);
+
   const grammarProgress = Math.round(
     (grammarLessons.length / totalGrammarLessons) * 100
   );
+
+  const readingXP =
+    readingBestScore === "Chưa có"
+      ? 0
+      : Number(readingBestScore.split("/")[0]) * 20;
+
+  const listeningXP =
+    listeningBestScore === "Chưa có"
+      ? 0
+      : Number(listeningBestScore.split("/")[0]) * 20;
+
+  const totalXP =
+    learnedWords.length * 10 +
+    grammarLessons.length * 30 +
+    plannerTasks.length * 20 +
+    readingXP +
+    listeningXP +
+    (hasWriting ? 50 : 0);
+
+  let level = "Beginner";
+
+  if (totalXP >= 600) {
+    level = "IELTS Warrior";
+  } else if (totalXP >= 300) {
+    level = "Learner";
+  } else if (totalXP >= 100) {
+    level = "Starter";
+  }
+
+  const xpToNextLevel =
+    totalXP < 100
+      ? 100 - totalXP
+      : totalXP < 300
+      ? 300 - totalXP
+      : totalXP < 600
+      ? 600 - totalXP
+      : 0;
 
   return (
     <main className="min-h-screen bg-slate-950 text-white p-5 md:p-10">
@@ -64,7 +104,9 @@ export default function Home() {
           <h2 className="text-xl md:text-2xl font-bold text-green-400">
             🎯 Goal
           </h2>
+
           <p className="mt-3 text-3xl md:text-4xl font-bold">IELTS 7.0</p>
+
           <p className="mt-2 text-slate-400">Deadline: cuối tháng 3</p>
         </div>
 
@@ -72,9 +114,11 @@ export default function Home() {
           <h2 className="text-xl md:text-2xl font-bold text-green-400">
             📚 Vocabulary
           </h2>
+
           <p className="mt-3 text-3xl md:text-4xl font-bold">
             {learnedWords.length} từ
           </p>
+
           <p className="mt-2 text-slate-400">Đã học và lưu tiến độ</p>
         </div>
 
@@ -82,9 +126,11 @@ export default function Home() {
           <h2 className="text-xl md:text-2xl font-bold text-green-400">
             ✍️ Grammar
           </h2>
+
           <p className="mt-3 text-3xl md:text-4xl font-bold">
             {grammarLessons.length}/{totalGrammarLessons}
           </p>
+
           <p className="mt-2 text-slate-400">Bài ngữ pháp đã học</p>
         </div>
 
@@ -92,9 +138,11 @@ export default function Home() {
           <h2 className="text-xl md:text-2xl font-bold text-green-400">
             📝 Writing
           </h2>
+
           <p className="mt-3 text-3xl md:text-4xl font-bold">
             {hasWriting ? "Có bài" : "Chưa có"}
           </p>
+
           <p className="mt-2 text-slate-400">Bài viết nháp của bạn</p>
         </div>
       </div>
@@ -119,7 +167,8 @@ export default function Home() {
           </div>
 
           <p className="mt-4 text-slate-400">
-            Bạn đã hoàn thành {plannerTasks.length}/{totalTasks} nhiệm vụ hôm nay.
+            Bạn đã hoàn thành {plannerTasks.length}/{totalTasks} nhiệm vụ hôm
+            nay.
           </p>
         </div>
 
@@ -142,7 +191,8 @@ export default function Home() {
           </div>
 
           <p className="mt-4 text-slate-400">
-            Bạn đã học {grammarLessons.length}/{totalGrammarLessons} bài Grammar.
+            Bạn đã học {grammarLessons.length}/{totalGrammarLessons} bài
+            Grammar.
           </p>
         </div>
       </div>
@@ -152,9 +202,11 @@ export default function Home() {
           <h2 className="text-xl md:text-2xl font-bold text-green-400">
             📖 Reading
           </h2>
+
           <p className="mt-3 text-slate-300">
             Gần nhất: <span className="font-bold">{readingLastScore}</span>
           </p>
+
           <p className="mt-2 text-slate-300">
             Cao nhất: <span className="font-bold">{readingBestScore}</span>
           </p>
@@ -164,9 +216,11 @@ export default function Home() {
           <h2 className="text-xl md:text-2xl font-bold text-green-400">
             🎧 Listening
           </h2>
+
           <p className="mt-3 text-slate-300">
             Gần nhất: <span className="font-bold">{listeningLastScore}</span>
           </p>
+
           <p className="mt-2 text-slate-300">
             Cao nhất: <span className="font-bold">{listeningBestScore}</span>
           </p>
@@ -176,7 +230,9 @@ export default function Home() {
           <h2 className="text-xl md:text-2xl font-bold text-green-400">
             🔥 Streak
           </h2>
+
           <p className="mt-3 text-3xl font-bold">Day 1</p>
+
           <p className="mt-2 text-slate-400">Sẽ nâng cấp sau</p>
         </div>
 
@@ -184,8 +240,23 @@ export default function Home() {
           <h2 className="text-xl md:text-2xl font-bold text-green-400">
             🏆 Level
           </h2>
-          <p className="mt-3 text-3xl font-bold">Beginner</p>
-          <p className="mt-2 text-slate-400">IELTS 2.0 → 7.0</p>
+
+          <p className="mt-3 text-3xl font-bold">{level}</p>
+
+          <p className="mt-2 text-slate-400">
+            Tổng XP:{" "}
+            <span className="font-bold text-green-400">{totalXP}</span>
+          </p>
+
+          {xpToNextLevel > 0 ? (
+            <p className="mt-2 text-slate-500">
+              Còn {xpToNextLevel} XP để lên level tiếp theo.
+            </p>
+          ) : (
+            <p className="mt-2 text-slate-500">
+              Bạn đã đạt level cao nhất hiện tại.
+            </p>
+          )}
         </div>
       </div>
 
@@ -212,7 +283,8 @@ export default function Home() {
 
           <p className="text-slate-300 leading-8">
             Học đều mỗi ngày quan trọng hơn học quá nhiều trong một ngày.
-            Chỉ cần bạn giữ nhịp, mục tiêu IELTS 6.5–7.0 sẽ thực tế hơn rất nhiều.
+            Chỉ cần bạn giữ nhịp, mục tiêu IELTS 6.5–7.0 sẽ thực tế hơn rất
+            nhiều.
           </p>
         </div>
       </div>
