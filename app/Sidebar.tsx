@@ -16,6 +16,8 @@ const menuItems = [
   { name: "Writing", href: "/writing", icon: "📝" },
   { name: "Mock Test", href: "/mock-test", icon: "🧪" },
   { name: "Notes", href: "/notes", icon: "📒" },
+  { name: "Mistakes", href: "/mistakes", icon: "❌" },
+  { name: "Review", href: "/review", icon: "🔁" },
   { name: "Planner", href: "/planner", icon: "📅" },
   { name: "Achievements", href: "/achievements", icon: "🏆" },
   { name: "Statistics", href: "/statistics", icon: "📊" },
@@ -37,7 +39,7 @@ export default function Sidebar() {
   }, [pathname]);
 
   return (
-    <aside className="w-full border-b border-slate-800 bg-slate-900 text-white md:min-h-screen md:w-64 md:border-b-0 md:border-r">
+    <aside className="w-full border-b border-slate-800 bg-slate-900 text-white md:h-screen md:w-64 md:border-b-0 md:border-r md:overflow-y-auto">
       <div className="p-4 md:p-6">
         <div className="mb-4 md:mb-10">
           <h1 className="text-2xl font-bold md:text-3xl">🎓 Phoenix</h1>
