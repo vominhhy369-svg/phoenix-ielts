@@ -29,38 +29,51 @@ export default function Home() {
   const plannerProgress = Math.round((plannerTasks.length / totalTasks) * 100);
 
   return (
-    <main className="min-h-screen bg-slate-950 text-white p-10">
-      <h1 className="text-5xl font-bold mb-3">🎓 IELTS MASTER 7.0</h1>
+    <main className="min-h-screen bg-slate-950 text-white p-5 md:p-10">
+      <h1 className="text-4xl md:text-5xl font-bold mb-3 leading-tight">
+        🎓 IELTS MASTER 7.0
+      </h1>
 
-      <p className="text-slate-400 mb-10">
+      <p className="text-slate-400 mb-8 md:mb-10 text-base md:text-lg">
         Welcome back, Triết 👋 Keep going to IELTS 7.0!
       </p>
 
-      <div className="grid grid-cols-3 gap-6 mb-10">
-        <div className="bg-slate-800 rounded-2xl p-6">
-          <h2 className="text-2xl font-bold text-green-400">🎯 Goal</h2>
-          <p className="mt-3 text-3xl font-bold">IELTS 7.0</p>
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3 mb-8 md:mb-10">
+        <div className="bg-slate-800 rounded-2xl p-5 md:p-6">
+          <h2 className="text-xl md:text-2xl font-bold text-green-400">
+            🎯 Goal
+          </h2>
+          <p className="mt-3 text-3xl md:text-4xl font-bold">IELTS 7.0</p>
           <p className="mt-2 text-slate-400">Deadline: cuối tháng 3</p>
         </div>
 
-        <div className="bg-slate-800 rounded-2xl p-6">
-          <h2 className="text-2xl font-bold text-green-400">📚 Vocabulary</h2>
-          <p className="mt-3 text-3xl font-bold">{learnedWords.length} từ</p>
+        <div className="bg-slate-800 rounded-2xl p-5 md:p-6">
+          <h2 className="text-xl md:text-2xl font-bold text-green-400">
+            📚 Vocabulary
+          </h2>
+          <p className="mt-3 text-3xl md:text-4xl font-bold">
+            {learnedWords.length} từ
+          </p>
           <p className="mt-2 text-slate-400">Đã học và lưu tiến độ</p>
         </div>
 
-        <div className="bg-slate-800 rounded-2xl p-6">
-          <h2 className="text-2xl font-bold text-green-400">📝 Writing</h2>
-          <p className="mt-3 text-3xl font-bold">
+        <div className="bg-slate-800 rounded-2xl p-5 md:p-6">
+          <h2 className="text-xl md:text-2xl font-bold text-green-400">
+            📝 Writing
+          </h2>
+          <p className="mt-3 text-3xl md:text-4xl font-bold">
             {hasWriting ? "Có bài" : "Chưa có"}
           </p>
           <p className="mt-2 text-slate-400">Bài viết nháp của bạn</p>
         </div>
       </div>
 
-      <div className="bg-slate-800 rounded-2xl p-8 mb-10">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-3xl font-bold">📅 Tiến độ hôm nay</h2>
+      <div className="bg-slate-800 rounded-2xl p-5 md:p-8 mb-8 md:mb-10">
+        <div className="flex flex-col gap-2 md:flex-row md:justify-between md:items-center mb-4">
+          <h2 className="text-2xl md:text-3xl font-bold">
+            📅 Tiến độ hôm nay
+          </h2>
+
           <p className="text-green-400 font-bold text-2xl">
             {plannerProgress}%
           </p>
@@ -78,9 +91,9 @@ export default function Home() {
         </p>
       </div>
 
-      <div className="grid grid-cols-2 gap-6">
-        <div className="bg-slate-800 rounded-2xl p-6">
-          <h2 className="text-2xl font-bold text-green-400 mb-4">
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+        <div className="bg-slate-800 rounded-2xl p-5 md:p-6">
+          <h2 className="text-xl md:text-2xl font-bold text-green-400 mb-4">
             ✅ Nhiệm vụ hôm nay
           </h2>
 
@@ -94,8 +107,8 @@ export default function Home() {
           </ul>
         </div>
 
-        <div className="bg-slate-800 rounded-2xl p-6">
-          <h2 className="text-2xl font-bold text-green-400 mb-4">
+        <div className="bg-slate-800 rounded-2xl p-5 md:p-6">
+          <h2 className="text-xl md:text-2xl font-bold text-green-400 mb-4">
             🔥 Lời nhắc
           </h2>
 
