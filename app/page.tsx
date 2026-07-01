@@ -1,6 +1,11 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
+
+type Mistake = {
+  fixed: boolean;
+};
 
 export default function Home() {
   const [profileName, setProfileName] = useState("Triết");
@@ -21,6 +26,13 @@ export default function Home() {
   const [listeningBestScore, setListeningBestScore] =
     useState<string>("Chưa có");
 
+  const [mockBestScore, setMockBestScore] = useState("Chưa có");
+  const [mockTestCount, setMockTestCount] = useState(0);
+
+  const [notesCount, setNotesCount] = useState(0);
+  const [mistakesCount, setMistakesCount] = useState(0);
+  const [fixedMistakesCount, setFixedMistakesCount] = useState(0);
+
   useEffect(() => {
     const savedName = localStorage.getItem("profileName");
     const savedTargetBand = localStorage.getItem("profileTargetBand");
@@ -37,6 +49,18 @@ export default function Home() {
 
     const savedListeningLast = localStorage.getItem("listeningLastScore");
     const savedListeningBest = localStorage.getItem("listeningBestScore");
+
+    const savedMockBest = localStorage.getItem("mockTestBestScore");
+    const savedMockCount = localStorage.getItem("mockTestCount");
+
+    const notes = JSON.parse(localStorage.getItem("ieltsNotes") || "[]");
+    const mistakes = JSON.parse(
+      localStorage.getItem("ieltsMistakes") || "[]"
+    );
+
+    const fixedMistakes = mistakes.filter(
+      (mistake: Mistake) => mistake.fixed
+    );
 
     if (savedName) setProfileName(savedName);
     if (savedTargetBand) setTargetBand(savedTargetBand);
@@ -59,6 +83,13 @@ export default function Home() {
 
     if (savedListeningLast) setListeningLastScore(`${savedListeningLast}/3`);
     if (savedListeningBest) setListeningBestScore(`${savedListeningBest}/3`);
+
+    if (savedMockBest) setMockBestScore(`${savedMockBest}/6`);
+    if (savedMockCount) setMockTestCount(Number(savedMockCount));
+
+    setNotesCount(notes.length);
+    setMistakesCount(mistakes.length);
+    setFixedMistakesCount(fixedMistakes.length);
   }, []);
 
   const totalTasks = 6;
@@ -108,6 +139,8 @@ export default function Home() {
       ? 600 - totalXP
       : 0;
 
+  const notFixedMistakesCount = mistakesCount - fixedMistakesCount;
+
   return (
     <main className="min-h-screen bg-slate-950 text-white p-5 md:p-10">
       <h1 className="text-4xl md:text-5xl font-bold mb-3 leading-tight">
@@ -118,7 +151,7 @@ export default function Home() {
         Welcome back, {profileName} 👋 Keep going to IELTS {targetBand}!
       </p>
 
-      <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4 mb-8 md:mb-10">
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4 mb-8">
         <div className="bg-slate-800 rounded-2xl p-5 md:p-6">
           <h2 className="text-xl md:text-2xl font-bold text-green-400">
             🎯 Goal
@@ -133,42 +166,41 @@ export default function Home() {
 
         <div className="bg-slate-800 rounded-2xl p-5 md:p-6">
           <h2 className="text-xl md:text-2xl font-bold text-green-400">
-            📚 Vocabulary
+            🏆 Level
           </h2>
 
-          <p className="mt-3 text-3xl md:text-4xl font-bold">
-            {learnedWords.length} từ
-          </p>
+          <p className="mt-3 text-3xl md:text-4xl font-bold">{level}</p>
 
-          <p className="mt-2 text-slate-400">Đã học và lưu tiến độ</p>
+          <p className="mt-2 text-slate-400">
+            Tổng XP:{" "}
+            <span className="font-bold text-green-400">{totalXP}</span>
+          </p>
         </div>
 
         <div className="bg-slate-800 rounded-2xl p-5 md:p-6">
           <h2 className="text-xl md:text-2xl font-bold text-green-400">
-            ✍️ Grammar
+            🔥 Streak
           </h2>
 
-          <p className="mt-3 text-3xl md:text-4xl font-bold">
-            {grammarLessons.length}/{totalGrammarLessons}
-          </p>
+          <p className="mt-3 text-3xl md:text-4xl font-bold">Day {streak}</p>
 
-          <p className="mt-2 text-slate-400">Bài ngữ pháp đã học</p>
+          <p className="mt-2 text-slate-400">Hoàn thành Planner để tăng.</p>
         </div>
 
         <div className="bg-slate-800 rounded-2xl p-5 md:p-6">
           <h2 className="text-xl md:text-2xl font-bold text-green-400">
-            📝 Writing
+            🧪 Mock Test
           </h2>
 
           <p className="mt-3 text-3xl md:text-4xl font-bold">
-            {hasWriting ? "Có bài" : "Chưa có"}
+            {mockBestScore}
           </p>
 
-          <p className="mt-2 text-slate-400">Bài viết nháp của bạn</p>
+          <p className="mt-2 text-slate-400">Đã làm {mockTestCount} lần</p>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-5 xl:grid-cols-2 mb-8 md:mb-10">
+      <div className="grid grid-cols-1 gap-5 xl:grid-cols-2 mb-8">
         <div className="bg-slate-800 rounded-2xl p-5 md:p-8">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl md:text-3xl font-bold">
@@ -218,7 +250,57 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4 mb-8 md:mb-10">
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4 mb-8">
+        <div className="bg-slate-800 rounded-2xl p-5 md:p-6">
+          <h2 className="text-xl md:text-2xl font-bold text-green-400">
+            📚 Vocabulary
+          </h2>
+
+          <p className="mt-3 text-3xl md:text-4xl font-bold">
+            {learnedWords.length} từ
+          </p>
+
+          <p className="mt-2 text-slate-400">Mỗi từ = 10 XP</p>
+        </div>
+
+        <div className="bg-slate-800 rounded-2xl p-5 md:p-6">
+          <h2 className="text-xl md:text-2xl font-bold text-green-400">
+            📝 Writing
+          </h2>
+
+          <p className="mt-3 text-3xl md:text-4xl font-bold">
+            {hasWriting ? "Có bài" : "Chưa có"}
+          </p>
+
+          <p className="mt-2 text-slate-400">Bài viết nháp của bạn</p>
+        </div>
+
+        <div className="bg-slate-800 rounded-2xl p-5 md:p-6">
+          <h2 className="text-xl md:text-2xl font-bold text-green-400">
+            📒 Notes
+          </h2>
+
+          <p className="mt-3 text-3xl md:text-4xl font-bold">
+            {notesCount}
+          </p>
+
+          <p className="mt-2 text-slate-400">Ghi chú đã lưu</p>
+        </div>
+
+        <div className="bg-slate-800 rounded-2xl p-5 md:p-6">
+          <h2 className="text-xl md:text-2xl font-bold text-green-400">
+            ❌ Mistakes
+          </h2>
+
+          <p className="mt-3 text-3xl md:text-4xl font-bold">
+            {notFixedMistakesCount}
+          </p>
+
+          <p className="mt-2 text-slate-400">Lỗi cần ôn lại</p>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-2 mb-8">
         <div className="bg-slate-800 rounded-2xl p-5 md:p-6">
           <h2 className="text-xl md:text-2xl font-bold text-green-400">
             📖 Reading
@@ -246,70 +328,66 @@ export default function Home() {
             Cao nhất: <span className="font-bold">{listeningBestScore}</span>
           </p>
         </div>
+      </div>
 
-        <div className="bg-slate-800 rounded-2xl p-5 md:p-6">
-          <h2 className="text-xl md:text-2xl font-bold text-green-400">
-            🔥 Streak
-          </h2>
+      <div className="bg-slate-800 rounded-2xl p-5 md:p-6 mb-8">
+        <h2 className="text-2xl md:text-3xl font-bold text-green-400 mb-5">
+          ⚡ Quick Actions
+        </h2>
 
-          <p className="mt-3 text-3xl font-bold">Day {streak}</p>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+          <Link
+            href="/roadmap"
+            className="bg-slate-900 hover:bg-slate-700 transition rounded-2xl p-5 font-bold"
+          >
+            🗺️ Xem Roadmap
+          </Link>
 
-          <p className="mt-2 text-slate-400">
-            Hoàn thành đủ nhiệm vụ để tăng streak.
-          </p>
-        </div>
+          <Link
+            href="/mock-test"
+            className="bg-slate-900 hover:bg-slate-700 transition rounded-2xl p-5 font-bold"
+          >
+            🧪 Làm Mock Test
+          </Link>
 
-        <div className="bg-slate-800 rounded-2xl p-5 md:p-6">
-          <h2 className="text-xl md:text-2xl font-bold text-green-400">
-            🏆 Level
-          </h2>
+          <Link
+            href="/notes"
+            className="bg-slate-900 hover:bg-slate-700 transition rounded-2xl p-5 font-bold"
+          >
+            📒 Thêm ghi chú
+          </Link>
 
-          <p className="mt-3 text-3xl font-bold">{level}</p>
-
-          <p className="mt-2 text-slate-400">
-            Tổng XP:{" "}
-            <span className="font-bold text-green-400">{totalXP}</span>
-          </p>
-
-          {xpToNextLevel > 0 ? (
-            <p className="mt-2 text-slate-500">
-              Còn {xpToNextLevel} XP để lên level tiếp theo.
-            </p>
-          ) : (
-            <p className="mt-2 text-slate-500">
-              Bạn đã đạt level cao nhất hiện tại.
-            </p>
-          )}
+          <Link
+            href="/mistakes"
+            className="bg-slate-900 hover:bg-slate-700 transition rounded-2xl p-5 font-bold"
+          >
+            ❌ Ôn lỗi sai
+          </Link>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-        <div className="bg-slate-800 rounded-2xl p-5 md:p-6">
-          <h2 className="text-xl md:text-2xl font-bold text-green-400 mb-4">
-            ✅ Nhiệm vụ hôm nay
-          </h2>
+      <div className="bg-slate-800 rounded-2xl p-5 md:p-6">
+        <h2 className="text-xl md:text-2xl font-bold text-green-400 mb-4">
+          🔥 Lời nhắc
+        </h2>
 
-          <ul className="space-y-3 text-slate-300">
-            <li>📚 Vocabulary - học 20 từ</li>
-            <li>✍️ Grammar - học 1 bài</li>
-            <li>🎧 Listening - luyện 20 phút</li>
-            <li>📖 Reading - làm 1 bài đọc</li>
-            <li>📝 Writing - viết 1 đoạn ngắn</li>
-            <li>🎤 Speaking - luyện 1 câu hỏi</li>
-          </ul>
-        </div>
+        <p className="text-slate-300 leading-8">
+          Học đều mỗi ngày quan trọng hơn học quá nhiều trong một ngày. Chỉ cần
+          bạn giữ nhịp, ôn lỗi sai và luyện đủ 4 kỹ năng, mục tiêu IELTS{" "}
+          {targetBand} sẽ thực tế hơn rất nhiều.
+        </p>
 
-        <div className="bg-slate-800 rounded-2xl p-5 md:p-6">
-          <h2 className="text-xl md:text-2xl font-bold text-green-400 mb-4">
-            🔥 Lời nhắc
-          </h2>
-
-          <p className="text-slate-300 leading-8">
-            Học đều mỗi ngày quan trọng hơn học quá nhiều trong một ngày.
-            Chỉ cần bạn giữ nhịp, mục tiêu IELTS {targetBand} sẽ thực tế hơn
-            rất nhiều.
+        {xpToNextLevel > 0 ? (
+          <p className="mt-4 text-slate-400">
+            Còn{" "}
+            <span className="font-bold text-green-400">{xpToNextLevel} XP</span>{" "}
+            để lên level tiếp theo.
           </p>
-        </div>
+        ) : (
+          <p className="mt-4 text-slate-400">
+            Bạn đã đạt level cao nhất hiện tại. Tiếp tục giữ streak nhé!
+          </p>
+        )}
       </div>
     </main>
   );
