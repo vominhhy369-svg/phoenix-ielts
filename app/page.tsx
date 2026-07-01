@@ -33,7 +33,7 @@ export default function Home() {
       <h1 className="text-5xl font-bold mb-3">🎓 IELTS MASTER 7.0</h1>
 
       <p className="text-slate-400 mb-10">
-        Welcome back, Triết 👋 Hôm nay mình tiếp tục tiến gần hơn tới IELTS 7.0.
+        Welcome back, Triết 👋 Keep going to IELTS 7.0!
       </p>
 
       <div className="grid grid-cols-3 gap-6 mb-10">
