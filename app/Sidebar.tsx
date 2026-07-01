@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
 const menuItems = [
@@ -21,6 +22,17 @@ const menuItems = [
 export default function Sidebar() {
   const pathname = usePathname();
 
+  const [targetBand, setTargetBand] = useState("7.0");
+  const [deadline, setDeadline] = useState("Cuối tháng 3");
+
+  useEffect(() => {
+    const savedTargetBand = localStorage.getItem("profileTargetBand");
+    const savedDeadline = localStorage.getItem("profileDeadline");
+
+    if (savedTargetBand) setTargetBand(savedTargetBand);
+    if (savedDeadline) setDeadline(savedDeadline);
+  }, [pathname]);
+
   return (
     <aside className="w-full border-b border-slate-800 bg-slate-900 text-white md:min-h-screen md:w-64 md:border-b-0 md:border-r">
       <div className="p-4 md:p-6">
@@ -28,7 +40,7 @@ export default function Sidebar() {
           <h1 className="text-2xl font-bold md:text-3xl">🎓 Phoenix</h1>
 
           <p className="mt-1 text-xs text-slate-400 md:text-sm">
-            IELTS MASTER 7.0
+            IELTS MASTER {targetBand}
           </p>
         </div>
 
@@ -57,11 +69,11 @@ export default function Sidebar() {
           <p className="text-sm text-slate-400">Goal</p>
 
           <p className="mt-1 text-2xl font-bold text-green-400">
-            IELTS 7.0
+            IELTS {targetBand}
           </p>
 
           <p className="mt-2 text-xs text-slate-500">
-            Deadline: cuối tháng 3
+            Deadline: {deadline}
           </p>
         </div>
       </div>
