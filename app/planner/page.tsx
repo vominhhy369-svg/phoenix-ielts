@@ -13,18 +13,37 @@ const tasks = [
 
 export default function Planner() {
   const [completedTasks, setCompletedTasks] = useState<string[]>([]);
+  const [streak, setStreak] = useState(0);
 
   useEffect(() => {
-    const saved = localStorage.getItem("plannerTasks");
+    const savedTasks = localStorage.getItem("plannerTasks");
+    const savedStreak = localStorage.getItem("streakCount");
 
-    if (saved) {
-      setCompletedTasks(JSON.parse(saved));
+    if (savedTasks) {
+      setCompletedTasks(JSON.parse(savedTasks));
+    }
+
+    if (savedStreak) {
+      setStreak(Number(savedStreak));
     }
   }, []);
 
   useEffect(() => {
     localStorage.setItem("plannerTasks", JSON.stringify(completedTasks));
-  }, [completedTasks]);
+
+    if (completedTasks.length === tasks.length) {
+      const today = new Date().toDateString();
+      const lastStreakDate = localStorage.getItem("lastStreakDate");
+
+      if (lastStreakDate !== today) {
+        const newStreak = streak + 1;
+
+        setStreak(newStreak);
+        localStorage.setItem("streakCount", String(newStreak));
+        localStorage.setItem("lastStreakDate", today);
+      }
+    }
+  }, [completedTasks, streak]);
 
   const toggleTask = (task: string) => {
     if (completedTasks.includes(task)) {
@@ -32,6 +51,11 @@ export default function Planner() {
     } else {
       setCompletedTasks([...completedTasks, task]);
     }
+  };
+
+  const resetToday = () => {
+    setCompletedTasks([]);
+    localStorage.setItem("plannerTasks", JSON.stringify([]));
   };
 
   const progress = Math.round((completedTasks.length / tasks.length) * 100);
@@ -43,6 +67,36 @@ export default function Planner() {
       <p className="text-slate-400 mb-8">
         Kế hoạch học IELTS hôm nay của Triết.
       </p>
+
+      <div className="grid grid-cols-2 gap-6 mb-8">
+        <div className="bg-slate-800 rounded-2xl p-6">
+          <h2 className="text-2xl font-bold text-green-400">
+            🔥 Streak
+          </h2>
+
+          <p className="mt-3 text-4xl font-bold">
+            Day {streak}
+          </p>
+
+          <p className="mt-2 text-slate-400">
+            Hoàn thành đủ nhiệm vụ mỗi ngày để tăng streak.
+          </p>
+        </div>
+
+        <div className="bg-slate-800 rounded-2xl p-6">
+          <h2 className="text-2xl font-bold text-green-400">
+            ✅ Hoàn thành
+          </h2>
+
+          <p className="mt-3 text-4xl font-bold">
+            {completedTasks.length}/{tasks.length}
+          </p>
+
+          <p className="mt-2 text-slate-400">
+            Nhiệm vụ hôm nay.
+          </p>
+        </div>
+      </div>
 
       <div className="bg-slate-800 rounded-2xl p-6 mb-8">
         <div className="flex justify-between mb-3">
@@ -74,13 +128,20 @@ export default function Planner() {
         ))}
       </div>
 
+      <button
+        onClick={resetToday}
+        className="mt-8 bg-red-500 text-white px-6 py-3 rounded-xl font-bold"
+      >
+        Reset nhiệm vụ hôm nay
+      </button>
+
       <div className="mt-8 bg-slate-800 rounded-2xl p-6">
         <h2 className="text-2xl font-bold text-green-400 mb-3">
           🎯 Mục tiêu
         </h2>
 
         <p className="text-slate-300">
-          Hoàn thành đủ 6 nhiệm vụ mỗi ngày để tiến gần hơn tới IELTS 7.0.
+          Hoàn thành đủ 6 nhiệm vụ mỗi ngày để tăng streak và tiến gần hơn tới IELTS 7.0.
         </p>
       </div>
     </div>
