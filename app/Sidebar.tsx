@@ -12,6 +12,7 @@ const menuItems = [
   { name: "Speaking", href: "/speaking", icon: "🎤" },
   { name: "Writing", href: "/writing", icon: "📝" },
   { name: "Planner", href: "/planner", icon: "📅" },
+  { name: "Achievements", href: "/achievements", icon: "🏆" },
 ];
 
 export default function Sidebar() {
@@ -22,6 +23,7 @@ export default function Sidebar() {
       <div className="p-4 md:p-6">
         <div className="mb-4 md:mb-10">
           <h1 className="text-2xl font-bold md:text-3xl">🎓 Phoenix</h1>
+
           <p className="mt-1 text-xs text-slate-400 md:text-sm">
             IELTS MASTER 7.0
           </p>
@@ -50,9 +52,11 @@ export default function Sidebar() {
 
         <div className="mt-5 hidden rounded-2xl bg-slate-800 p-4 md:block">
           <p className="text-sm text-slate-400">Goal</p>
+
           <p className="mt-1 text-2xl font-bold text-green-400">
             IELTS 7.0
           </p>
+
           <p className="mt-2 text-xs text-slate-500">
             Deadline: cuối tháng 3
           </p>
