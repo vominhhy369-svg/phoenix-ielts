@@ -7,12 +7,15 @@ import { usePathname } from "next/navigation";
 const menuItems = [
   { name: "Dashboard", href: "/", icon: "🏠" },
   { name: "Profile", href: "/profile", icon: "👤" },
+  { name: "Roadmap", href: "/roadmap", icon: "🗺️" },
   { name: "Vocabulary", href: "/vocabulary", icon: "📚" },
   { name: "Grammar", href: "/grammar", icon: "✍️" },
   { name: "Reading", href: "/reading", icon: "📖" },
   { name: "Listening", href: "/listening", icon: "🎧" },
   { name: "Speaking", href: "/speaking", icon: "🎤" },
   { name: "Writing", href: "/writing", icon: "📝" },
+  { name: "Mock Test", href: "/mock-test", icon: "🧪" },
+  { name: "Notes", href: "/notes", icon: "📒" },
   { name: "Planner", href: "/planner", icon: "📅" },
   { name: "Achievements", href: "/achievements", icon: "🏆" },
   { name: "Statistics", href: "/statistics", icon: "📊" },
@@ -72,9 +75,7 @@ export default function Sidebar() {
             IELTS {targetBand}
           </p>
 
-          <p className="mt-2 text-xs text-slate-500">
-            Deadline: {deadline}
-          </p>
+          <p className="mt-2 text-xs text-slate-500">Deadline: {deadline}</p>
         </div>
       </div>
     </aside>
