@@ -3,6 +3,10 @@
 import { useEffect, useState } from "react";
 
 export default function Home() {
+  const [profileName, setProfileName] = useState("Triết");
+  const [targetBand, setTargetBand] = useState("7.0");
+  const [deadline, setDeadline] = useState("Cuối tháng 3");
+
   const [learnedWords, setLearnedWords] = useState<string[]>([]);
   const [plannerTasks, setPlannerTasks] = useState<string[]>([]);
   const [grammarLessons, setGrammarLessons] = useState<string[]>([]);
@@ -18,6 +22,10 @@ export default function Home() {
     useState<string>("Chưa có");
 
   useEffect(() => {
+    const savedName = localStorage.getItem("profileName");
+    const savedTargetBand = localStorage.getItem("profileTargetBand");
+    const savedDeadline = localStorage.getItem("profileDeadline");
+
     const savedWords = localStorage.getItem("learnedWords");
     const savedTasks = localStorage.getItem("plannerTasks");
     const savedGrammar = localStorage.getItem("completedGrammarLessons");
@@ -29,6 +37,10 @@ export default function Home() {
 
     const savedListeningLast = localStorage.getItem("listeningLastScore");
     const savedListeningBest = localStorage.getItem("listeningBestScore");
+
+    if (savedName) setProfileName(savedName);
+    if (savedTargetBand) setTargetBand(savedTargetBand);
+    if (savedDeadline) setDeadline(savedDeadline);
 
     if (savedWords) setLearnedWords(JSON.parse(savedWords));
     if (savedTasks) setPlannerTasks(JSON.parse(savedTasks));
@@ -99,11 +111,11 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-slate-950 text-white p-5 md:p-10">
       <h1 className="text-4xl md:text-5xl font-bold mb-3 leading-tight">
-        🎓 IELTS MASTER 7.0
+        🎓 IELTS MASTER {targetBand}
       </h1>
 
       <p className="text-slate-400 mb-8 md:mb-10 text-base md:text-lg">
-        Welcome back, Triết 👋 Keep going to IELTS 7.0!
+        Welcome back, {profileName} 👋 Keep going to IELTS {targetBand}!
       </p>
 
       <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4 mb-8 md:mb-10">
@@ -112,9 +124,11 @@ export default function Home() {
             🎯 Goal
           </h2>
 
-          <p className="mt-3 text-3xl md:text-4xl font-bold">IELTS 7.0</p>
+          <p className="mt-3 text-3xl md:text-4xl font-bold">
+            IELTS {targetBand}
+          </p>
 
-          <p className="mt-2 text-slate-400">Deadline: cuối tháng 3</p>
+          <p className="mt-2 text-slate-400">Deadline: {deadline}</p>
         </div>
 
         <div className="bg-slate-800 rounded-2xl p-5 md:p-6">
@@ -292,8 +306,8 @@ export default function Home() {
 
           <p className="text-slate-300 leading-8">
             Học đều mỗi ngày quan trọng hơn học quá nhiều trong một ngày.
-            Chỉ cần bạn giữ nhịp, mục tiêu IELTS 6.5–7.0 sẽ thực tế hơn rất
-            nhiều.
+            Chỉ cần bạn giữ nhịp, mục tiêu IELTS {targetBand} sẽ thực tế hơn
+            rất nhiều.
           </p>
         </div>
       </div>
