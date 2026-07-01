@@ -7,6 +7,7 @@ export default function Home() {
   const [plannerTasks, setPlannerTasks] = useState<string[]>([]);
   const [grammarLessons, setGrammarLessons] = useState<string[]>([]);
   const [hasWriting, setHasWriting] = useState(false);
+  const [streak, setStreak] = useState(0);
 
   const [readingLastScore, setReadingLastScore] = useState<string>("Chưa có");
   const [readingBestScore, setReadingBestScore] = useState<string>("Chưa có");
@@ -21,6 +22,7 @@ export default function Home() {
     const savedTasks = localStorage.getItem("plannerTasks");
     const savedGrammar = localStorage.getItem("completedGrammarLessons");
     const savedEssay = localStorage.getItem("writingEssay");
+    const savedStreak = localStorage.getItem("streakCount");
 
     const savedReadingLast = localStorage.getItem("readingLastScore");
     const savedReadingBest = localStorage.getItem("readingBestScore");
@@ -34,6 +36,10 @@ export default function Home() {
 
     if (savedEssay && savedEssay.trim().length > 0) {
       setHasWriting(true);
+    }
+
+    if (savedStreak) {
+      setStreak(Number(savedStreak));
     }
 
     if (savedReadingLast) setReadingLastScore(`${savedReadingLast}/3`);
@@ -68,6 +74,7 @@ export default function Home() {
     plannerTasks.length * 20 +
     readingXP +
     listeningXP +
+    streak * 25 +
     (hasWriting ? 50 : 0);
 
   let level = "Beginner";
@@ -231,9 +238,11 @@ export default function Home() {
             🔥 Streak
           </h2>
 
-          <p className="mt-3 text-3xl font-bold">Day 1</p>
+          <p className="mt-3 text-3xl font-bold">Day {streak}</p>
 
-          <p className="mt-2 text-slate-400">Sẽ nâng cấp sau</p>
+          <p className="mt-2 text-slate-400">
+            Hoàn thành đủ nhiệm vụ để tăng streak.
+          </p>
         </div>
 
         <div className="bg-slate-800 rounded-2xl p-5 md:p-6">
