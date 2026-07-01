@@ -13,6 +13,8 @@ const menuItems = [
   { name: "Writing", href: "/writing", icon: "📝" },
   { name: "Planner", href: "/planner", icon: "📅" },
   { name: "Achievements", href: "/achievements", icon: "🏆" },
+  { name: "Statistics", href: "/statistics", icon: "📊" },
+  { name: "Settings", href: "/settings", icon: "⚙️" },
 ];
 
 export default function Sidebar() {
